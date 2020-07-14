@@ -3,6 +3,7 @@ library(tidyverse)
 library(caret) 
 library(rpart) 
 library(party)
+library(MLmetrics)
 
 path1 = '/../../all_variables_and_GPI_monthly_all_countries'
 path2 = '/../../../dt_results'
@@ -67,7 +68,7 @@ for (i in country_files){
   results_analytics <- data.frame(
     RMSE = RMSE(predictions, test.data$GPI),
     Rsquare = R2(predictions, test.data$GPI),
-    MSE = mean((test.data$GPI-predictions)^2),
+    Mape = MAPE(actualpreds, actualtestGPI),
     Pearson = cor(test.data$GPI, predictions,  method = "pearson")
   )
   print(results_analytics)
