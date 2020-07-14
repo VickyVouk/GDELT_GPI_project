@@ -3,6 +3,8 @@ library(tidyverse)
 library(caret)
 library(randomForest)
 library(party)
+library(MLmetrics)
+
 
 path1 = '/../../all_variables_and_GPI_monthly_all_countries'
 path2 = '/../../rf_results'
@@ -14,7 +16,7 @@ for (i in country_files){
   country<-strsplit(coun, ".", fixed = TRUE)[[1]][[1]]
   print(country)
   
-  results_analytics <- setNames(data.frame(matrix(ncol = 6, nrow = 0)), c('country', 'mtry', 'RMSE', 'Rsquare', 'MSE', 'Pearson'))
+  results_analytics <- setNames(data.frame(matrix(ncol = 6, nrow = 0)), c('country', 'mtry', 'RMSE', 'Rsquare', 'Mape', 'Pearson'))
   
   #Load the data
   file_df <- file.path(path1, paste('all_variables_', country, '.csv', sep = '')) 
@@ -47,7 +49,7 @@ for (i in country_files){
       tuneLength = 10
       )
     
-    #CVariables' importance
+    #Variables' importance
     imp_var <- varImp(model)$importance
     imp_var <- rownames_to_column(imp_var, var = "var_name")
     df_important_var <- rbind(df_important_var, imp_var)
@@ -71,7 +73,7 @@ for (i in country_files){
     results_analytics <- data.frame(
     RMSE = RMSE(predictions, test.data$GPI),
     Rsquare = R2(predictions, test.data$GPI),
-    MSE = mean((test.data$GPI-predictions)^2),
+    Mape = MAPE(predictions, test.data$GPI),
     Pearson = cor(test.data$GPI, predictions,  method = "pearson")
     )
     write.csv(results_analytics, file.path (path2, paste(country, '_rf_', train_set, '_results.csv', sep = '')), row.names=T)
