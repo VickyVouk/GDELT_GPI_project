@@ -63,7 +63,7 @@ for (i in country_files){
   results_analytics <- data.frame(
     RMSE = RMSE(predictions, test.data$GPI), 
     Rsquare = R2(predictions, test.data$GPI),
-    MSE = mean((test.data$GPI-predictions)^2),
+    Mape = MAPE(predictions, test.data$GPI),
     Pearson = cor(test.data$GPI, predictions,  method = "pearson")
   )
   write.csv(results_analytics, file.path (path2, paste(country, '_elnet_', train_set, '_results.csv', sep = '')), row.names=T)
