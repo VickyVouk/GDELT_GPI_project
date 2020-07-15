@@ -5,8 +5,8 @@ library(rpart)
 library(party)
 library(MLmetrics)
 
-path1 = '/../../all_variables_and_GPI_monthly_all_countries'
-path2 = '/../../../dt_results'
+path1 = '../../all_variables_and_GPI_monthly_all_countries'
+path2 = '../../../dt_results'
 
 country_files = list.files(path1, pattern="*.csv")
 
@@ -30,7 +30,7 @@ for (i in country_files){
     h <- length(df_country$GPI) - length(train.data$GPI)
     test.data <- tail(df_country, h)
   
-  #Create the dataframe to save the most important variables per rolling
+  #Create the dataframe to save the most important variables from each training
   df_important_var<-setNames(data.frame(matrix(ncol = 1, nrow = 0)), c("var_name"))
   
   cparameters<-list()
@@ -61,7 +61,7 @@ for (i in country_files){
   rownames(predictions_cp) <- NULL
   write.csv(predictions_cp, file.path (path2, paste(country, '_dt_', train_set, '_predictions_cp.csv', sep = '')))
   
-  #Save the important variables per rolling
+  #Save the important variables from each training
   write.csv(df_important_var, file.path (path2, paste(country, '_dt_', train_set, '_important_variables.csv', sep = '')))
   
   # Model performance metrics
