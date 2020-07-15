@@ -6,8 +6,8 @@ library(party)
 library(MLmetrics)
 
 
-path1 = '/../../all_variables_and_GPI_monthly_all_countries'
-path2 = '/../../rf_results'
+path1 = '../../all_variables_and_GPI_monthly_all_countries'
+path2 = '../../rf_results'
 
 country_files = list.files(path1, pattern="*.csv")
 
@@ -35,7 +35,7 @@ for (i in country_files){
       
     #Prediction model
     
-    #The dataframe with the most important variables per rolling
+    #The dataframe with the most important variables from each training
     df_important_var<-setNames(data.frame(matrix(ncol = 1, nrow = 0)), c("var_name"))
     
     mtry_var <- list()
@@ -61,7 +61,7 @@ for (i in country_files){
     train.data <- rbind(train.data, test.data[i:i,])
     }
     
-    #Save the most important variables per rolling
+    #Save the most important variables from each training
     write.csv(df_important_var,file.path (path2, paste(country, '_rf_', train_set, '_important_variables.csv', sep = '')))
     
     #Save in a dataframe mtry and predictions 
