@@ -5,8 +5,9 @@ library(randomForest)
 library(party)
 library(MLmetrics)
 
-path1 = '/../../all_variables_and_GPI_monthly_all_countries'
-path2 = '/../../elnet_results'
+path1 = '../../all_variables_and_GPI_monthly_all_countries'
+path2 = '../../elnet_results'
+'/../../'
 
 country_files = list.files(path1, pattern="*.csv")
 
@@ -33,7 +34,7 @@ for (i in country_files){
       
     #Prediction model
 
-    #Create the dataframe to save the impVar per rolling
+    #Create the dataframe to save the impVar from each training
     df_impvar<-setNames(data.frame(matrix(ncol = 1, nrow = 0)), c("Overall"))
     
     predictions<-double()
@@ -54,7 +55,7 @@ for (i in country_files){
       train.data <- rbind(train.data, test.data[i:i,])
     }
   
-  #Save the most important variables per rolling
+  #Save the most important variables from each training
   write.csv(df_impvar, file.path (path2, paste(country, '_elnet_', train_set, '_impvar.csv', sep = '')))
   
   #Save the predictions
